@@ -2,6 +2,7 @@
 
 My personal portfolio website, built with React and Vite. It shows my projects, skills, education and certifications, with a downloadable résumé and ways to contact me.
 
+**Live site:** https://eshasingh.vercel.app
 
 ## Features
 
@@ -10,18 +11,19 @@ My personal portfolio website, built with React and Vite. It shows my projects, 
 - Project cards with screenshots you can flip through, plus links to each GitHub repo
 - Smooth scroll animations and an animated hero
 - Résumé download and contact links (email, LinkedIn, GitHub)
+- All content kept in one file (`src/data.js`) so it is easy to update
 
 ## Tech stack
 
-- React 
+- React
 - Vite
 - Plain CSS (no UI framework)
 
 ## Run it locally
 
 ```bash
-git clone https://github.com/esha2303/portfolio.git
-cd portfolio
+git clone https://github.com/esha2303/esha-portfolio.git
+cd esha-portfolio
 npm install
 npm run dev
 ```
