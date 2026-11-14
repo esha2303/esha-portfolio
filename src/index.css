@@ -1,0 +1,1275 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap');
+
+/* ==========================================================
+   PORTFOLIO STYLES
+
+   1. Tokens          7. About               13. Motion
+   2. Base            8. Projects            14. Tablet
+   3. Layout          9. Skills              15. Mobile
+   4. Header         10. Journey             16. Accessibility
+   5. Typography     11. Contact
+   6. Hero           12. Footer
+========================================================== */
+
+
+/* ==========================================================
+   1. TOKENS
+========================================================== */
+
+:root {
+  font-family: 'DM Sans', sans-serif;
+
+  /* Theme colours */
+  --bg: #f4f0e5;
+  --paper: #fffdf7;
+  --ink: #193b32;
+  --muted: #53665c;
+  --green: #193b32;
+  --orange: #e77d42;
+  --line: rgba(25, 59, 50, 0.2);
+
+  /* Colours that stay the same in both themes */
+  --cream: #f4f0e5;
+  --forest: #193b32;
+  --deep: #24483d;
+  --orange-soft: #e99a69;
+
+  /* Section background + project card tints */
+  --band: #e8e5d9;
+  --tint-1: #dce2d4;
+  --tint-2: #e9c9b5;
+  --tint-3: #e7d9a9;
+  --tint-4: #d7dce8;
+
+  /* Fonts */
+  --mono: 'DM Mono', monospace;
+  --serif: 'Playfair Display', Georgia, serif;
+
+  /* Layout and spacing */
+  --container: 1200px;
+  --gutter: 8vw;
+  --header-h: 64px;
+  --section-y: clamp(48px, 7vw, 72px);
+
+  /* Type scale */
+  --text-sm: 0.9rem;
+  --text-xs: 0.68rem;
+  --h2: clamp(2.1rem, 4vw, 3.2rem);
+
+  color: var(--ink);
+  background: var(--bg);
+}
+
+:root[data-theme="dark"] {
+  --bg: #142c26;
+  --paper: #1d3931;
+  --ink: #f4f0e5;
+  --muted: #c2cec5;
+  --green: #f4f0e5;
+  --orange: #f39a63;
+  --line: rgba(244, 240, 229, 0.2);
+
+  --band: #203e35;
+}
+
+
+/* ==========================================================
+   2. BASE
+========================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-h);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.15;
+}
+
+
+/* ==========================================================
+   3. LAYOUT
+========================================================== */
+
+.site-shell {
+  width: 100%;
+  overflow-x: clip;
+}
+
+.section-wrap,
+.site-footer {
+  width: min(100% - var(--gutter), var(--container));
+  margin-inline: auto;
+}
+
+
+/* ==========================================================
+   4. HEADER
+========================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: var(--header-h);
+  padding-inline: max(calc(var(--gutter) / 2), calc((100% - var(--container)) / 2));
+  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.wordmark {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.09em;
+  text-decoration: none;
+}
+
+.wordmark span {
+  color: var(--orange);
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.5vw, 34px);
+}
+
+.main-nav a,
+.theme-toggle {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.main-nav a:not(.nav-contact) {
+  color: var(--muted);
+}
+
+.main-nav a:hover {
+  color: var(--orange);
+}
+
+.nav-contact {
+  background: var(--green);
+  color: var(--bg);
+  padding: 10px 16px;
+  border-radius: 3px;
+}
+
+.theme-toggle {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.menu-toggle {
+  display: none;
+}
+
+
+/* ==========================================================
+   5. TYPOGRAPHY + SHARED PIECES
+========================================================== */
+
+.eyebrow {
+  font: 500 0.7rem var(--mono);
+  letter-spacing: 0.12em;
+  color: var(--orange);
+  margin: 0 0 16px;
+}
+
+.eyebrow-light {
+  color: var(--orange-soft);
+}
+
+/* Big section titles (About, Projects, Skills, Journey) */
+.intro-grid h2,
+.section-heading h2 {
+  font-size: var(--h2);
+  line-height: 1.08;
+  letter-spacing: -0.05em;
+  margin: 0;
+}
+
+h1 em,
+h2 em {
+  font-family: var(--serif);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+.section-heading {
+  margin-bottom: 32px;
+}
+
+.section-heading h2 {
+  color: var(--ink);
+}
+
+.section-heading h2 em {
+  color: var(--orange);
+}
+
+.heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 32px;
+}
+
+.section-note {
+  max-width: 300px;
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  padding: 13px 20px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.button-dark {
+  background: var(--green);
+  color: var(--bg);
+}
+
+.text-link {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-underline-offset: 5px;
+}
+
+
+/* ==========================================================
+   6. HERO + SOLAR ART
+========================================================== */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: 4vw;
+  padding: 40px 0 72px;
+  position: relative;
+}
+
+.hero-copy {
+  min-width: 0;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 9px;
+  background: #6b9b68;
+  border-radius: 50%;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 4.8vw, 4.2rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+}
+
+.hero-period {
+  color: var(--orange);
+}
+
+.hero-intro {
+  max-width: 460px;
+  margin: 18px 0 24px;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+  font: 0.65rem var(--mono);
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.meta-line {
+  flex: 0 0 32px;
+  height: 1px;
+  background: var(--orange);
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 26px;
+  left: 0;
+  z-index: 2;
+  font: 0.65rem var(--mono);
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+/* ----- Solar system artwork ----- */
+
+.solar-art {
+  position: relative;
+  height: clamp(280px, 34vw, 360px);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--deep);
+  color: var(--cream);
+}
+
+.solar-label,
+.solar-caption {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  font: 0.62rem var(--mono);
+  letter-spacing: 0.1em;
+}
+
+.solar-label {
+  top: 20px;
+}
+
+.solar-caption {
+  bottom: 20px;
+}
+
+.main-planet {
+  position: absolute;
+  top: 32%;
+  left: 33%;
+  z-index: 2;
+  width: 35%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #e77d42;
+  border-radius: 50%;
+}
+
+.planet-ring {
+  position: absolute;
+  top: 27%;
+  left: -38%;
+  width: 175%;
+  height: 48%;
+  border: 10px solid var(--cream);
+  border-radius: 50%;
+  transform: rotate(-25deg);
+}
+
+.orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgba(244, 240, 229, 0.5);
+  border-radius: 50%;
+}
+
+.orbit-one {
+  width: 72%;
+  height: 42%;
+  transform: translate(-50%, -50%) rotate(-25deg);
+}
+
+.orbit-two {
+  width: 88%;
+  height: 58%;
+  transform: translate(-50%, -50%) rotate(35deg);
+}
+
+.orbit-three {
+  width: 76%;
+  height: 88%;
+  transform: translate(-50%, -50%) rotate(-55deg);
+}
+
+.orbit-planet {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.small-planet {
+  top: 8%;
+  left: 15%;
+  width: 16px;
+  height: 16px;
+  background: var(--cream);
+}
+
+.orange-planet {
+  bottom: 10%;
+  right: 15%;
+  width: 22px;
+  height: 22px;
+  background: #e77d42;
+}
+
+.tiny-planet {
+  top: 20%;
+  right: 10%;
+  width: 10px;
+  height: 10px;
+  background: var(--cream);
+}
+
+.solar-star {
+  position: absolute;
+  color: var(--cream);
+}
+
+.star-one {
+  top: 24%;
+  left: 20%;
+  font-size: 20px;
+}
+
+.star-two {
+  right: 20%;
+  bottom: 23%;
+  font-size: 26px;
+}
+
+.star-three {
+  left: 23%;
+  bottom: 32%;
+  font-size: 30px;
+}
+
+
+/* ==========================================================
+   7. ABOUT
+========================================================== */
+
+.intro-band {
+  padding-block: var(--section-y);
+  background: var(--forest);
+  color: var(--cream);
+}
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 6vw;
+  align-items: start;
+}
+
+.intro-grid h2 em {
+  color: var(--orange-soft);
+}
+
+.intro-text > p {
+  max-width: 640px;
+  margin: 4px 0 32px;
+  font-size: clamp(1rem, 1.3vw, 1.12rem);
+  line-height: 1.8;
+  color: rgba(244, 240, 229, 0.9);
+}
+
+.quick-facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(244, 240, 229, 0.3);
+}
+
+.quick-facts div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.quick-facts strong {
+  font-size: 2rem;
+  letter-spacing: -0.05em;
+}
+
+.quick-facts span {
+  font: 0.65rem var(--mono);
+  letter-spacing: 0.08em;
+  color: rgba(244, 240, 229, 0.8);
+}
+
+
+/* ==========================================================
+   8. PROJECTS
+========================================================== */
+
+.projects-section {
+  padding-block: var(--section-y);
+}
+
+/* 6-column grid: first project spans all, the other three span 2 each */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--orange);
+  box-shadow: 0 14px 30px -18px rgba(25, 59, 50, 0.45);
+}
+
+.project-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 200px;
+  overflow: hidden;
+  background: var(--tint-1);
+  color: var(--forest);
+}
+
+.project-2 .project-visual { background: var(--tint-2); }
+.project-3 .project-visual { background: var(--tint-3); }
+.project-4 .project-visual { background: var(--tint-4); }
+
+/* Featured first project: wide card, image beside the text */
+.project-1 {
+  grid-column: 1 / -1;
+  flex-direction: row;
+}
+
+.project-1 .project-visual {
+  flex: 1.15;
+  height: auto;
+  min-height: 280px;
+}
+
+.project-1 .project-content {
+  flex: 1;
+  align-self: center;
+  padding: clamp(22px, 3vw, 36px);
+}
+
+.project-1 .project-title-row h3 {
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+}
+
+.project-1 .project-description {
+  font-size: 0.98rem;
+}
+
+.project-symbol {
+  font-size: clamp(4rem, 7vw, 6rem);
+  font-weight: 600;
+  line-height: 1;
+  opacity: 0.85;
+  transition: transform 0.35s ease;
+}
+
+.project-card:hover .project-symbol {
+  transform: rotate(-12deg) scale(1.08);
+}
+
+.project-image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.project-index,
+.project-category {
+  position: absolute;
+  top: 12px;
+  z-index: 2;
+  padding: 6px 9px;
+  background: rgba(255, 253, 247, 0.92);
+  color: var(--forest);
+  font: 0.62rem var(--mono);
+  letter-spacing: 0.08em;
+}
+
+.project-index { left: 12px; }
+.project-category { right: 12px; }
+
+.image-arrows {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.image-arrows button {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--paper);
+  font-size: 17px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.image-arrows button:hover {
+  background: #e77d42;
+  transform: scale(1.05);
+}
+
+.project-content {
+  padding: clamp(18px, 2.2vw, 24px);
+}
+
+.project-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+
+.project-title-row .eyebrow {
+  margin-bottom: 6px;
+  font-size: 0.62rem;
+}
+
+.project-title-row h3 {
+  margin: 0;
+  font-size: clamp(1.2rem, 1.7vw, 1.5rem);
+  letter-spacing: -0.04em;
+}
+
+.round-link {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font-size: 1.05rem;
+  text-decoration: none;
+}
+
+.round-link:hover {
+  background: var(--green);
+  color: var(--bg);
+}
+
+.project-description {
+  max-width: 610px;
+  margin: 12px 0 14px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag-list li {
+  padding: 5px 9px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font: 0.66rem var(--mono);
+}
+
+
+/* ==========================================================
+   9. SKILLS
+========================================================== */
+
+.skills-section {
+  padding-block: var(--section-y);
+  background: var(--band);
+  color: var(--ink);
+}
+
+.skills-section .section-heading h2 {
+  color: inherit;
+}
+
+.skills-grid {
+  border-top: 1px solid var(--line);
+}
+
+.skill-group {
+  display: grid;
+  grid-template-columns: 36px 210px 1fr;
+  gap: 12px 20px;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.skill-number {
+  color: var(--orange);
+  font: var(--text-xs) var(--mono);
+}
+
+.skill-group h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.skill-group ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.skill-group li {
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 0.88rem;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.skill-group li:hover {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--bg);
+  transform: translateY(-2px);
+}
+
+
+/* ==========================================================
+   10. JOURNEY (education, certificates, community)
+========================================================== */
+
+.journey-section {
+  padding-block: var(--section-y);
+}
+
+.journey-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6vw;
+}
+
+.subsection-label {
+  margin: 0 0 20px;
+  color: var(--orange);
+  font: var(--text-xs) var(--mono);
+  letter-spacing: 0.12em;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 16px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.timeline-period {
+  padding-top: 4px;
+  color: var(--muted);
+  font: var(--text-xs) var(--mono);
+}
+
+.timeline-item h4,
+.extra-block h4 {
+  margin: 0 0 6px;
+  font-size: 1.02rem;
+}
+
+.timeline-item p {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+.timeline-score {
+  color: var(--orange);
+  font: 0.7rem var(--mono);
+}
+
+.extra-block {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.extra-line {
+  margin: 8px 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.certificate-link {
+  display: block;
+  padding: 6px 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.certificate-link:hover {
+  color: var(--orange);
+}
+
+
+/* ==========================================================
+   11. CONTACT
+========================================================== */
+
+.contact-section {
+  --planet: clamp(160px, 24vw, 300px);
+
+  position: relative;
+  overflow: hidden;
+  padding-block: var(--section-y);
+  background: var(--deep);
+  color: var(--cream);
+}
+
+/* Decorative ringed planet, echoing the hero artwork */
+.contact-section::before,
+.contact-section::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  border-radius: 50%;
+}
+
+.contact-section::before {
+  right: calc(var(--planet) * -0.2);
+  width: var(--planet);
+  aspect-ratio: 1;
+  background: #e77d42;
+  transform: translateY(-50%);
+}
+
+.contact-section::after {
+  right: calc(var(--planet) * -0.55);
+  width: calc(var(--planet) * 1.7);
+  height: calc(var(--planet) * 0.45);
+  border: 6px solid rgba(244, 240, 229, 0.85);
+  transform: translateY(-50%) rotate(-25deg);
+}
+
+.contact-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.contact-inner h2 {
+  margin: 0;
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+}
+
+.contact-inner h2 em {
+  color: var(--orange-soft);
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.contact-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 16px;
+  border: 1px solid rgba(244, 240, 229, 0.4);
+  color: var(--cream);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.contact-links a:hover {
+  background: rgba(244, 240, 229, 0.12);
+}
+
+.contact-links svg {
+  width: 18px;
+  height: 18px;
+}
+
+.contact-email {
+  margin: 18px 0 0;
+  color: rgba(244, 240, 229, 0.8);
+  font-size: 0.92rem;
+}
+
+
+/* ==========================================================
+   12. FOOTER
+========================================================== */
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 0 56px;
+  color: var(--ink);
+  font: 0.72rem var(--mono);
+  letter-spacing: 0.07em;
+}
+
+.site-footer a {
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--orange);
+}
+
+
+/* ==========================================================
+   13. MOTION
+========================================================== */
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes float {
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes twinkle {
+  50% { opacity: 0.3; }
+}
+
+@keyframes nudge {
+  50% { transform: translateY(5px); }
+}
+
+@keyframes orbit-one {
+  to { transform: translate(-50%, -50%) rotate(335deg); }
+}
+
+@keyframes orbit-two {
+  to { transform: translate(-50%, -50%) rotate(-325deg); }
+}
+
+@keyframes orbit-three {
+  to { transform: translate(-50%, -50%) rotate(305deg); }
+}
+
+/* Hero entrance: each line fades up in turn */
+.hero-copy > * {
+  animation: fade-up 0.7s ease backwards;
+}
+
+.hero-copy > :nth-child(2) { animation-delay: 0.1s; }
+.hero-copy > :nth-child(3) { animation-delay: 0.2s; }
+.hero-copy > :nth-child(4) { animation-delay: 0.3s; }
+.hero-copy > :nth-child(5) { animation-delay: 0.4s; }
+
+.solar-art {
+  animation: fade-in 1s ease 0.3s backwards;
+}
+
+/* Solar system keeps moving */
+.orbit-one   { animation: orbit-one 40s linear infinite; }
+.orbit-two   { animation: orbit-two 55s linear infinite; }
+.orbit-three { animation: orbit-three 70s linear infinite; }
+
+.main-planet {
+  animation: float 7s ease-in-out infinite;
+}
+
+.solar-star {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.star-two   { animation-delay: 1s; }
+.star-three { animation-delay: 2s; }
+
+.scroll-cue {
+  animation: nudge 2s ease-in-out infinite;
+}
+
+/* Scroll reveal (the .reveal / .is-visible classes come from App.jsx) */
+.reveal {
+  opacity: 0;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  animation: fade-up 0.7s ease var(--delay, 0ms) backwards;
+}
+
+
+/* ==========================================================
+   14. TABLET (max 900px)
+========================================================== */
+
+@media (max-width: 900px) {
+  .hero {
+    gap: 28px;
+  }
+
+  .section-note {
+    max-width: 240px;
+  }
+
+  /* Projects: two columns, first and last cards full width */
+  .projects-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project-card {
+    grid-column: span 1;
+  }
+
+  .project-1,
+  .project-4 {
+    grid-column: 1 / -1;
+  }
+
+  .project-1 {
+    flex-direction: column;
+  }
+
+  .project-1 .project-visual {
+    flex: none;
+    height: 220px;
+    min-height: 0;
+  }
+}
+
+
+/* ==========================================================
+   15. MOBILE (max 650px)
+========================================================== */
+
+@media (max-width: 650px) {
+  :root {
+    --gutter: 40px;
+    --header-h: 60px;
+    --section-y: 44px;
+  }
+
+  /* Header + menu */
+  .menu-toggle {
+    display: block;
+    padding: 7px 12px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 18px calc(var(--gutter) / 2);
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .main-nav.is-open {
+    display: flex;
+  }
+
+  .main-nav a,
+  .theme-toggle {
+    padding: 4px 0;
+  }
+
+  .nav-contact {
+    padding: 10px 16px;
+    text-align: center;
+  }
+
+  .theme-toggle {
+    text-align: left;
+  }
+
+  /* Hero */
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 36px 0 60px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 11vw, 3.4rem);
+  }
+
+  .solar-art {
+    height: 260px;
+  }
+
+  .scroll-cue,
+  .contact-section::before,
+  .contact-section::after {
+    display: none;
+  }
+
+  .hero-meta {
+    margin-top: 26px;
+  }
+
+  /* Stacked layouts */
+  .intro-grid,
+  .journey-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .heading-row {
+    display: block;
+  }
+
+  .section-note {
+    margin-top: 14px;
+  }
+
+  .quick-facts {
+    gap: 12px;
+  }
+
+  .quick-facts strong {
+    font-size: 1.7rem;
+  }
+
+  .quick-facts span {
+    font-size: 0.55rem;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card,
+  .project-1,
+  .project-4 {
+    grid-column: auto;
+  }
+
+  .project-visual,
+  .project-1 .project-visual {
+    height: 200px;
+  }
+
+  .skill-group {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .timeline-item {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .site-footer {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+
+/* ==========================================================
+   16. ACCESSIBILITY
+========================================================== */
+
+:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+  }
+}
