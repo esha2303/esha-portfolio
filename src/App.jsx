@@ -1,9 +1,11 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import {
   profile,
   about,
   projects,
+  designProjects,
   skillGroups,
   education,
   certifications,
@@ -109,84 +111,177 @@ function SocialIcon({ type }) {
   );
 }
 
-// Project card with image navigation
-function ProjectCard({ project, index }) {
-  const [imageIndex, setImageIndex] = useState(-1);
+// Swipe left/right on touch screens
+function useSwipe(onNext, onPrev) {
+  const startX = useRef(null);
 
-  const hasImages = project.images.length > 0;
-  const showingImages = imageIndex >= 0;
+  return {
+    onTouchStart: (event) => {
+      startX.current = event.touches[0].clientX;
+    },
+    onTouchEnd: (event) => {
+      if (startX.current === null) return;
 
-  function nextImage(event) {
-    event.stopPropagation();
+      const distance = event.changedTouches[0].clientX - startX.current;
+      startX.current = null;
 
-    setImageIndex((current) => {
-      if (current === -1) return 0;
-
-      if (current === project.images.length - 1) {
-        return -1;
+      if (Math.abs(distance) > 40) {
+        if (distance < 0) onNext();
+        else onPrev();
       }
+    },
+  };
+}
 
-      return current + 1;
-    });
-  }
+// Full-screen gallery
+function Lightbox({ project, startIndex, onClose }) {
+  const [current, setCurrent] = useState(startIndex);
+  const total = project.images.length;
 
-  function previousImage(event) {
-    event.stopPropagation();
+  const next = () => setCurrent((value) => (value + 1) % total);
+  const previous = () => setCurrent((value) => (value - 1 + total) % total);
+  const swipe = useSwipe(next, previous);
 
-    setImageIndex((current) => {
-      if (current === 0) {
-        return -1;
-      }
+  // Keyboard: Esc closes, arrows move. Page scroll is locked while open.
+  useEffect(() => {
+    function onKey(event) {
+      if (event.key === "Escape") onClose();
+      if (event.key === "ArrowRight") setCurrent((value) => (value + 1) % total);
+      if (event.key === "ArrowLeft") setCurrent((value) => (value - 1 + total) % total);
+    }
 
-      if (current === -1) {
-        return project.images.length - 1;
-      }
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
 
-      return current - 1;
-    });
-  }
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [total, onClose]);
 
-  return (
-    <article className={`project-card project-${index + 1}`}>
-      <div className="project-visual">
-        {showingImages ? (
-          <img
-            src={project.images[imageIndex]}
-            alt={`${project.title} screenshot`}
-            className="project-image"
-          />
-        ) : (
-          <span className="project-symbol">
-            {project.symbol}
-          </span>
-        )}
+  const stop = (event) => event.stopPropagation();
 
-        <span className="project-index">
-          0{index + 1}
-        </span>
+  return createPortal(
+    <div
+      className="lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${project.title} screenshots`}
+      onClick={onClose}
+    >
+      <button className="lightbox-close" onClick={onClose} aria-label="Close gallery">
+        ✕
+      </button>
 
-        <span className="project-category">
-          {project.category}
-        </span>
+      <div className="lightbox-stage" onClick={stop} {...swipe}>
+        <img
+          key={current}
+          className="lightbox-image"
+          src={project.images[current]}
+          alt={`${project.title} screenshot ${current + 1} of ${total}`}
+        />
 
-        {hasImages && (
-          <div className="image-arrows">
-            {showingImages && (
-              <button
-                onClick={previousImage}
-                aria-label="Previous project image"
-              >
-                ←
-              </button>
-            )}
-
+        {total > 1 && (
+          <>
             <button
-              onClick={nextImage}
-              aria-label="Next project image"
+              className="lightbox-arrow lightbox-prev"
+              onClick={previous}
+              aria-label="Previous screenshot"
+            >
+              ←
+            </button>
+            <button
+              className="lightbox-arrow lightbox-next"
+              onClick={next}
+              aria-label="Next screenshot"
             >
               →
             </button>
-          </div>
+          </>
+        )}
+      </div>
+
+      <p className="lightbox-caption" onClick={stop}>
+        {project.title} · {current + 1} / {total}
+      </p>
+
+      {total > 1 && (
+        <div className="lightbox-thumbs" onClick={stop}>
+          {project.images.map((src, i) => (
+            <button
+              key={src}
+              className={i === current ? "thumb is-active" : "thumb"}
+              onClick={() => setCurrent(i)}
+              aria-label={`Show screenshot ${i + 1}`}
+            >
+              <img src={src} alt="" />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>,
+    document.body
+  );
+}
+
+// Project card: show the symbol as the cover; open screenshots from the cover or arrow.
+function ProjectCard({ project, index, design = false }) {
+  const [imageIndex, setImageIndex] = useState(0);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+
+  const total = project.images.length;
+  const hasImages = total > 0;
+  const hasMany = total > 1;
+
+  const next = () => setImageIndex((value) => (value + 1) % total);
+  const previous = () => setImageIndex((value) => (value - 1 + total) % total);
+  const swipe = useSwipe(next, previous);
+
+  return (
+    <article
+      className={
+        design
+          ? "project-card design-project-card"
+          : `project-card project-${index + 1}`
+      }
+    >
+      <div className="project-visual" {...(hasMany ? swipe : {})}>
+        <button
+          type="button"
+          className="project-cover"
+          onClick={() => hasImages && setGalleryOpen(true)}
+          disabled={!hasImages}
+          aria-label={
+            hasImages
+              ? `Open ${project.title} screenshots`
+              : `${project.title} project cover`
+          }
+        >
+          {project.coverImage ? (
+            <img
+              className="project-cover-image"
+              src={project.coverImage}
+              alt={`${project.title} design cover`}
+            />
+          ) : (
+            <span className="project-symbol" aria-hidden="true">
+              {project.symbol}
+            </span>
+          )}
+        </button>
+
+        <span className="project-category">{project.category}</span>
+
+        {hasImages && (
+          <button
+            type="button"
+            className="gallery-trigger"
+            onClick={() => setGalleryOpen(true)}
+            aria-label={`View ${project.title} screenshots`}
+            title="View project screenshots"
+          >
+            →
+          </button>
         )}
       </div>
 
@@ -197,22 +292,25 @@ function ProjectCard({ project, index }) {
             <h3>{project.title}</h3>
           </div>
 
-          {project.github && (
+          {(project.github || project.figma) && (
             <a
               className="round-link"
-              href={project.github}
+              href={project.github || project.figma}
               target="_blank"
               rel="noreferrer"
-              aria-label={`Open ${project.title} GitHub`}
+              aria-label={
+                project.figma
+                  ? `Open ${project.title} Figma design`
+                  : `Open ${project.title} GitHub`
+              }
+              title={project.figma ? "View in Figma" : "View on GitHub"}
             >
               ↗
             </a>
           )}
         </div>
 
-        <p className="project-description">
-          {project.description}
-        </p>
+        <p className="project-description">{project.description}</p>
 
         <ul className="tag-list">
           {project.tags.map((tag) => (
@@ -220,6 +318,14 @@ function ProjectCard({ project, index }) {
           ))}
         </ul>
       </div>
+
+      {galleryOpen && (
+        <Lightbox
+          project={project}
+          startIndex={imageIndex}
+          onClose={() => setGalleryOpen(false)}
+        />
+      )}
     </article>
   );
 }
@@ -419,6 +525,30 @@ export default function App() {
                 index={index}
               />
             ))}
+          </div>
+
+          <div className="design-projects-block">
+            <div className="design-projects-heading">
+              <div>
+                <p className="eyebrow">UI / UX DESIGN</p>
+                <h3>Design projects<span>.</span></h3>
+              </div>
+              <p className="design-projects-note">
+                Website and e-commerce concepts designed in Figma, with a focus
+                on thoughtful layouts and visual storytelling.
+              </p>
+            </div>
+
+            <div className="projects-grid design-projects-grid">
+              {designProjects.map((project, index) => (
+                <ProjectCard
+                  key={project.title}
+                  project={project}
+                  index={index}
+                  design
+                />
+              ))}
+            </div>
           </div>
         </section>
 

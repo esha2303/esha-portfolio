@@ -613,31 +613,25 @@ h2 em {
 }
 
 .project-symbol {
+  position: relative;
+  z-index: 1;
   font-size: clamp(4rem, 7vw, 6rem);
   font-weight: 600;
   line-height: 1;
   opacity: 0.85;
   transition: transform 0.35s ease;
+  pointer-events: none;
 }
 
 .project-card:hover .project-symbol {
   transform: rotate(-12deg) scale(1.08);
 }
 
-.project-image {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.project-index,
 .project-category {
   position: absolute;
   top: 12px;
-  z-index: 2;
+  right: 12px;
+  z-index: 3;
   padding: 6px 9px;
   background: rgba(255, 253, 247, 0.92);
   color: var(--forest);
@@ -645,32 +639,176 @@ h2 em {
   letter-spacing: 0.08em;
 }
 
-.project-index { left: 12px; }
-.project-category { right: 12px; }
+.project-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: zoom-in;
+}
 
-.image-arrows {
+.project-cover:disabled {
+  cursor: default;
+}
+
+.gallery-trigger {
   position: absolute;
   right: 12px;
   bottom: 12px;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--forest);
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease,
+    box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+/* Keep the arrow simple by default; lift and highlight it when the card is hovered. */
+.project-card:hover .gallery-trigger,
+.gallery-trigger:focus-visible {
+  background: rgba(255, 253, 247, 0.9);
+  color: var(--forest);
+  border-color: rgba(25, 59, 50, 0.14);
+  transform: translateY(-4px);
+  box-shadow: 0 5px 14px rgba(25, 59, 50, 0.12);
+}
+
+/* A stronger response when the pointer is directly on the arrow. */
+.gallery-trigger:hover {
+  background: var(--orange);
+  color: #fffdf7;
+  border-color: var(--orange);
+  transform: translateY(-6px) scale(1.08);
+  box-shadow: 0 0 0 5px rgba(231, 125, 66, 0.14),
+    0 7px 18px rgba(25, 59, 50, 0.16);
+}
+
+.gallery-trigger:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+.project-visual {
+  touch-action: pan-y;
+}
+
+/* Full-screen gallery */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 56px 16px 20px;
+  background: rgba(10, 20, 16, 0.93);
+  animation: fade-in 0.2s ease;
+}
+
+.lightbox-stage {
+  position: relative;
+  flex: 1;
+  width: min(100%, 1100px);
+  min-height: 0;
+}
+
+.lightbox-image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: fade-in 0.25s ease;
+}
+
+.lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  translate: 0 -50%;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(244, 240, 229, 0.92);
+  color: var(--forest);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.lightbox-prev { left: 8px; }
+.lightbox-next { right: 8px; }
+
+.lightbox-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(244, 240, 229, 0.4);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--cream);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.lightbox-caption {
+  margin: 0;
+  color: rgba(244, 240, 229, 0.85);
+  font: 0.72rem var(--mono);
+  letter-spacing: 0.08em;
+}
+
+.lightbox-thumbs {
   display: flex;
   gap: 8px;
+  max-width: 100%;
+  padding-bottom: 4px;
+  overflow-x: auto;
 }
 
-.image-arrows button {
-  width: 34px;
-  height: 34px;
-  border: none;
-  border-radius: 50%;
-  background: var(--forest);
-  color: var(--paper);
-  font-size: 17px;
+.thumb {
+  flex: 0 0 auto;
+  width: 72px;
+  height: 48px;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: none;
+  opacity: 0.55;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
 }
 
-.image-arrows button:hover {
-  background: #e77d42;
-  transform: scale(1.05);
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.thumb.is-active {
+  border-color: #e77d42;
+  opacity: 1;
 }
 
 .project-content {
@@ -1271,5 +1409,109 @@ h2 em {
 
   .reveal {
     opacity: 1;
+  }
+}
+
+/* ==========================================================
+   DESIGN PROJECTS
+   A smaller subheading and two visual Figma project cards.
+========================================================== */
+
+.design-projects-block {
+  margin-top: clamp(48px, 6vw, 72px);
+}
+
+.design-projects-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 28px;
+  margin-bottom: 24px;
+}
+
+.design-projects-heading .eyebrow {
+  margin-bottom: 9px;
+}
+
+.design-projects-heading h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.55rem, 2.5vw, 2.15rem);
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+}
+
+.design-projects-heading h3 span {
+  color: var(--orange);
+}
+
+.design-projects-note {
+  max-width: 340px;
+  margin: 0 0 3px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.design-projects-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.design-project-card {
+  grid-column: span 3;
+}
+
+.design-project-card .project-visual {
+  height: 235px;
+  background: var(--tint-1);
+}
+
+.project-cover-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.5s ease;
+  pointer-events: none;
+}
+
+.design-project-card:hover .project-cover-image {
+  transform: scale(1.035);
+}
+
+.design-project-card .project-content {
+  padding: clamp(20px, 2.5vw, 30px);
+}
+
+@media (max-width: 900px) {
+  .design-project-card {
+    grid-column: span 1;
+  }
+
+  .design-project-card .project-visual {
+    height: 210px;
+  }
+}
+
+@media (max-width: 650px) {
+  .design-projects-heading {
+    display: block;
+  }
+
+  .design-projects-note {
+    margin-top: 10px;
+  }
+
+  .design-projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .design-project-card {
+    grid-column: auto;
+  }
+
+  .design-project-card .project-visual {
+    height: 200px;
   }
 }

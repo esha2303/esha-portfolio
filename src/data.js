@@ -1,3 +1,4 @@
+
 export const profile = {
   name: "Esha Singh",
   email: "eshaofficial003@gmail.com",
@@ -5,13 +6,13 @@ export const profile = {
 
   links: {
     GitHub: "https://github.com/esha2303",
-    LinkedIn: " https://www.linkedin.com/in/esha2003/",
-    
+    LinkedIn: "https://www.linkedin.com/in/esha2003/",
   },
 };
 
 export const about =
   "I'm a Computer Science graduate and MCA student at IGDTUW. I enjoy building web apps, mostly the full-stack kind, and I've been trying out machine learning and data dashboards too. When I'm not coding, I'm usually sketching, watching anime or reading a novel.";
+
 export const projects = [
   {
     title: "UI Sense AI",
@@ -41,8 +42,8 @@ export const projects = [
     tags: ["React", "FastAPI", "Python", "Scikit-learn", "PostgreSQL"],
     github: "https://github.com/esha2303/savepoint-ai-journal",
     images: [
-      "/projects/savepoint/home.png",
       "/projects/savepoint/login.png",
+      "/projects/savepoint/home.png",
       "/projects/savepoint/result.png",
     ],
   },
@@ -72,6 +73,39 @@ export const projects = [
     tags: ["Python", "Pandas", "Scikit-learn", "Random Forest"],
     github: "https://github.com/esha2303/Small-Business-Success-Prediction",
     images: [],
+  },
+];
+
+export const designProjects = [
+  {
+    title: "Köhi – Coffee Website",
+    subtitle: "Coffee e-commerce website concept",
+    category: "UI / UX DESIGN",
+    description:
+      "A coffee website concept designed in Figma, featuring a welcoming homepage, drink categories, product menus and promotional sections.",
+    tags: ["Figma", "UI Design", "Website Design", "E-commerce"],
+    figma:
+      "https://www.figma.com/design/1QknNVqGT3LLaWTIJtwbKJ/kohi?t=WMQ0WqWJRlX1iIEp-1",
+    coverImage: "/projects/kohi/Home.png",
+    images: [
+      "/projects/kohi/Home.png",
+      "/projects/kohi/kohi.png",
+    ],
+  },
+
+  {
+    title: "Yuki – Home Decor & Objects",
+    subtitle: "Home decor e-commerce website concept",
+    category: "UI / UX DESIGN",
+    description:
+      "A home decor and lifestyle e-commerce website concept designed in Figma, showcasing curated objects through a clean layout and cohesive visual identity.",
+    tags: ["Figma", "UI Design", "Website Design", "E-commerce"],
+    figma:
+      "https://www.figma.com/design/QjUxWlb8lr9S85uVdlErDJ/Yuki?node-id=0-1&t=WMQ0WqWJRlX1iIEp-1",
+    coverImage: "/projects/yuki/Yuki.png",
+    images: [
+      "/projects/yuki/Yuki.png",
+    ],
   },
 ];
 
